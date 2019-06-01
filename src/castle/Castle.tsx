@@ -18,7 +18,7 @@ const createGame = () => {
   })
 }
 
-const App = () => {
+const Castle = () => {
   const [game, setGame] = useState(createGame())
 
   return (
@@ -29,4 +29,4 @@ const App = () => {
   )
 }
 
-export default App
+export default Castle

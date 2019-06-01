@@ -25,7 +25,8 @@ export default class World {
     game: castle.Game
   ) {
     game.world.tiles.forEach(placedTile => {
-      this.getTile(placedTile!).render(game)
+      // @TODO
+      // this.getTile(placedTile!).render(game, null, null)
     })
 
     this.removeOldTiles(game)
