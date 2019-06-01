@@ -1,5 +1,9 @@
 = Castle Web
 
+image:https://travis-ci.org/castle-game/castle-web.svg?branch=master[Build status, link=https://travis-ci.org/castle-game/castle-web]
+image:https://snyk.io/test/github/castle-game/castle-web/badge.svg[Vulnerabilities, link=https://snyk.io/test/github/castle-game/castle-web]
+image:https://img.shields.io/badge/code_style-standard-brightgreen.svg[JavaScript Style Guide, link=https://standardjs.com]
+
 Web client for Castle, using React and BabylonJS.
 
 This project was bootstrapped with https://github.com/facebook/create-react-app[Create React App].
