@@ -18,7 +18,7 @@
   "dependencies": {
     "babylonjs": "^3.3.0",
     "babylonjs-gui": "^3.3.0",
-    "castle-game": "castle-game/castle-game",
+    "castle-game": "git+https://github.com/castle-game/castle-game.git",
     "immutable": "^3.8.2",
     "react": "^16.8.4",
     "react-dom": "^16.8.4"
