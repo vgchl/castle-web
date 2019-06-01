@@ -1,17 +1,30 @@
 {
-  "name": "castle-web-3d",
+  "name": "castle-web",
   "version": "0.1.0",
   "private": true,
-  "dependencies": {
-    "react": "^16.8.4",
-    "react-dom": "^16.8.4",
+  "devDependencies": {
+    "@types/jest": "^24.0.11",
+    "@types/node": "^11.11.3",
+    "@types/react": "^16.8.8",
+    "@types/react-dom": "^16.8.2",
+    "tslint": "^5.17.0",
+    "tslint-config-standard": "^8.0.1",
+    "typescript": "^3.5.1",
     "react-scripts": "2.1.8"
+  },
+  "dependencies": {
+    "babylonjs": "^3.3.0",
+    "babylonjs-gui": "^3.3.0",
+    "castle-game": "castle-game/castle-game",
+    "immutable": "^3.8.2",
+    "react": "^16.8.4",
+    "react-dom": "^16.8.4"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "test": "npm run lint && react-scripts test --no-watch",
+    "lint": "tslint --project . --fix"
   },
   "eslintConfig": {
     "extends": "react-app"

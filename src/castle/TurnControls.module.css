@@ -1,0 +1,57 @@
+.TurnControls {
+  position: absolute;
+  right: 0;
+  padding: 25px;
+}
+
+.TurnControl {
+  /* border-radius: 5px 5px 0 0; */
+  width: 275px;
+  box-shadow: 0 0 3px rgba(0, 0, 0, 0.2);
+  background: #fff;
+  display: flex;
+}
+.TurnControl:last-child {
+  border-bottom: 3px solid #f0f0f0;
+}
+
+.TurnPlayer {
+  font-family: 'Gill Sans';
+  text-align: center;
+  padding: 30px 0 0;
+  color: #777;
+  border-top: 3px solid  #3498db;
+  /* color: #fff; */
+  /* border-radius: 5px 5px 0 0; */
+  font-size: 18pt;
+}
+
+.TilesRemaining {
+  font-family: 'Gill Sans';
+  width: 100%;
+  text-align: center;
+  padding: 0 0 20px;
+  color: #777;
+}
+
+.TurnControl button {
+  display: block;
+  width: 100%;
+  border: none;
+  padding: 15px 0;
+  font-family: 'EmojiSymbols';
+  font-size: 20pt;
+  font-weight: bold;
+}
+
+.TurnControl button.Confirm {
+  /* min-width: 70%; */
+  font-size: 28pt;
+  padding: 12px 0 20px;
+  color: #26a65b;
+  border-right: 1px solid #eee;
+}
+
+.TurnControl button.Undo {
+  color: #aaa;
+}
