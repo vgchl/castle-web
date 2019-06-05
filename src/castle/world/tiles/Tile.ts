@@ -1,47 +1,50 @@
 import { Mesh, Scene, Vector3 } from 'babylonjs'
 import * as castle from 'castle-game'
 import * as immutable from 'immutable'
-import { TileD } from '.'
+import * as tileViews from '.'
 
 export default abstract class Tile {
 
+  public static readonly width = 3
+
   public mesh?: Mesh
 
-  public constructor (
-    protected readonly scene: Scene
-  ) {
-    //
-  }
+  protected constructor (
+    protected readonly scene: Scene,
+    public readonly position: castle.Position = castle.Position.origin,
+    public readonly orientation: castle.Direction = castle.Direction.north
+  ) {}
 
   public static create (
-    placedTile: castle.PlacedTile,
-    scene: Scene
+    tile: castle.Tile,
+    scene: Scene,
+    position: castle.Position = castle.Position.origin,
+    orientation: castle.Direction = castle.Direction.north
   ): Tile {
-    if (placedTile.tile instanceof castle.TileD) {
-      return new TileD(scene)
+    if (tile instanceof castle.TileD) {
+      return new tileViews.TileD(scene, position, orientation)
     }
-    if (placedTile.tile instanceof castle.TileV) {
-      return new TileD(scene)
+    if (tile instanceof castle.TileV) {
+      return new tileViews.TileV(scene, position, orientation)
     }
     throw new Error('Unsupported tile type.')
   }
 
   public render (
-    placedTile: castle.PlacedTile,
-    figures: immutable.Map<string, castle.Figure>,
-    figurePlaceholders: immutable.Map<string, immutable.List<castle.Figure>>
+    figures: immutable.Map<string, castle.Figure> = immutable.Map(),
+    figurePlaceholders: immutable.Map<string, immutable.List<castle.Figure>> = immutable.Map()
   ) {
-    this.renderTile(placedTile.tile)
+    this.renderTile()
     this.renderFigures(figures)
     this.renderFigurePlaceholders(figurePlaceholders)
 
     if (this.mesh) {
-      this.mesh.position = new Vector3(placedTile.position.x * 3, 0, placedTile.position.y * 3)
-      this.mesh.rotation.y = placedTile.orientation.radians
+      this.mesh.position = new Vector3(this.position.x * Tile.width, 0, this.position.y * Tile.width)
+      this.mesh.rotation.y = this.orientation.radians
     }
   }
 
-  protected abstract renderTile (tile: castle.Tile): void
+  protected abstract renderTile (): void
 
   protected abstract renderFigures (figures: immutable.Map<string, castle.Figure>): void
 

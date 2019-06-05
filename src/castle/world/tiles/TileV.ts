@@ -1,35 +1,42 @@
-import { Color3, MeshBuilder, Scene, StandardMaterial, Vector3 } from 'babylonjs'
+import { Color3, MeshBuilder, StandardMaterial, Vector3 } from 'babylonjs'
 import * as castle from 'castle-game'
 import { Tile } from '.'
+import * as immutable from 'immutable'
 
 export default class TileV extends Tile {
 
-  constructor (
-    public readonly position: castle.Position,
-    scene: Scene
-  ) {
-    super(position)
+  protected renderTile () {
+    if (this.mesh) {
+      return
+    }
 
-    this.mesh = MeshBuilder.CreateBox('tile', { height: 0.5, width: 3, depth: 3 }, scene)
-    this.mesh.position = new Vector3(this.position.x * 3, 0, this.position.y * 3)
-    const material = new StandardMaterial('mat', scene)
+    this.mesh = MeshBuilder.CreateBox('tile', { height: 0.5, width: 3, depth: 3 }, this.scene)
+    const material = new StandardMaterial('mat', this.scene)
     material.alpha = 1
     material.diffuseColor = Color3.FromInts(139, 180, 74)
     material.specularColor = new Color3(0.1, 0.1, 0.1)
     this.mesh.material = material
 
-    const roadA = MeshBuilder.CreateGround('roadA', { width: 0.5, height: 1.75 }, scene)
+    const roadA = MeshBuilder.CreateGround('roadA', { width: 0.5, height: 1.75 }, this.scene)
     roadA.parent = this.mesh
     roadA.position = new Vector3(0, 0.251, -0.625)
-    const roadMaterial = new StandardMaterial('mat', scene)
+    const roadMaterial = new StandardMaterial('mat', this.scene)
     roadMaterial.diffuseColor = Color3.FromInts(217, 210, 191)
     roadMaterial.specularColor = new Color3(0.1, 0.1, 0.1)
     roadA.material = roadMaterial
 
-    const roadB = MeshBuilder.CreateGround('roadB', { width: 1.75, height: 0.5 }, scene)
+    const roadB = MeshBuilder.CreateGround('roadB', { width: 1.75, height: 0.5 }, this.scene)
     roadB.parent = this.mesh
     roadB.position = new Vector3(-0.625, 0.251, -0)
     roadB.material = roadMaterial
+  }
+
+  protected renderFigures (figures: immutable.Map<string, castle.Figure>) {
+    // TODO
+  }
+
+  protected renderFigurePlaceholders (figurePlaceholders: immutable.Map<string, immutable.List<castle.Figure>>) {
+    // TODO
   }
 
 }

@@ -25,8 +25,7 @@ export default class World {
     game: castle.Game
   ) {
     game.world.tiles.forEach(placedTile => {
-      // @TODO
-      // this.getTile(placedTile!).render(game, null, null)
+      this.getTile(placedTile!).render()
     })
 
     this.removeOldTiles(game)
@@ -55,7 +54,7 @@ export default class World {
     if (this.tiles.has(position.toString())) {
       return this.tiles.get(position.toString())!
     }
-    const tile = Tile.create(placedTile, this.scene)
+    const tile = Tile.create(placedTile.tile, this.scene, placedTile.position, placedTile.orientation)
     this.tiles.set(position.toString(), tile)
     return tile
   }

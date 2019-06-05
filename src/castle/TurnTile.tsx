@@ -2,7 +2,7 @@ import { Camera, Color4, DirectionalLight, Engine, Scene, UniversalCamera, Vecto
 import * as castle from 'castle-game'
 import React, { useEffect, useRef } from 'react'
 import styles from './TurnTile.module.css'
-import { TileD } from './world'
+import { Tile } from './world'
 
 interface Props {
   readonly tile: castle.Tile
@@ -24,7 +24,7 @@ const TurnTile = ({ tile }: Props) => {
 
     camera.setTarget(Vector3.Zero())
 
-    const tile = new TileD(castle.Position.origin, scene)
+    Tile.create(tile, scene).render()
 
     const light1 = new DirectionalLight('light', new Vector3(0, -1, 0), scene)
     light1.intensity = 1.00

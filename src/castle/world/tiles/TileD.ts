@@ -1,11 +1,11 @@
-import { Color3, MeshBuilder, StandardMaterial, Vector3 } from 'babylonjs'
+import { Color3, MeshBuilder, StandardMaterial, Vector3, Scene } from 'babylonjs'
 import * as castle from 'castle-game'
 import * as immutable from 'immutable'
 import { Tile } from '.'
 
 export default class TileD extends Tile {
 
-  protected renderTile (tile: castle.Tile) {
+  protected renderTile () {
     if (this.mesh) {
       return
     }
