@@ -1,0 +1,28 @@
+kind: pipeline
+name: default
+
+steps:
+  - name: build
+    image: node
+    commands:
+      - npm ci
+      - npm test
+      - CI=false npm run build
+
+  - name: package
+    image: plugins/docker
+    settings:
+      dockerfile: dockerfile
+      registry: gcr.io
+      repo: gcr.io/castle-242508/castle-web
+      tags:
+        - latest
+        - ${DRONE_BUILD_NUMBER}
+      username:
+        from_secret: gcr_username
+      password:
+        from_secret: gcr_password
+    when:
+      event:
+        exclude:
+          - pull_request

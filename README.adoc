@@ -1,6 +1,6 @@
 = Castle Web
 
-image:https://travis-ci.org/castle-game/castle-web.svg?branch=master[Build status, link=https://travis-ci.org/castle-game/castle-web]
+image:https://cloud.drone.io/api/badges/castle-game/castle-web/status.svg[Build status, link=https://cloud.drone.io/castle-game/castle-web]
 image:https://snyk.io/test/github/castle-game/castle-web/badge.svg[Vulnerabilities, link=https://snyk.io/test/github/castle-game/castle-web]
 image:https://img.shields.io/badge/code_style-standard-brightgreen.svg[JavaScript Style Guide, link=https://standardjs.com]
 
