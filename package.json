@@ -24,11 +24,10 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build && npm run container:build",
+    "build": "react-scripts build",
     "test": "npm run lint && react-scripts test --no-watch",
     "lint": "tslint --project . --fix",
-    "container:build": "docker build -t asia.gcr.io/castle-242508/castle-web:${npm_package_version} .",
-    "container:push": "docker push asia.gcr.io/castle-242508/castle-web:${npm_package_version}"
+    "container:build": "docker build -t gcr.io/castle-242508/castle-web ."
   },
   "eslintConfig": {
     "extends": "react-app"
