@@ -65,5 +65,4 @@ const TurnTile = ({ tile }: Props) => {
   )
 }
 
-
 export default TurnTile
