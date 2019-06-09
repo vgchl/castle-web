@@ -1,7 +1,7 @@
 import { AbstractMesh, ActionManager, ExecuteCodeAction, MeshBuilder, Observable, Scene, Vector3 } from 'babylonjs'
 import * as castle from 'castle-game'
 
-export default class PlaceTileIndicator {
+export default class PlaceTileIndicatorView {
 
   public readonly mesh: AbstractMesh
 

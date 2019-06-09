@@ -1,3 +1,3 @@
-export { default as Tile } from './Tile'
-export { default as TileD } from './TileD'
-export { default as TileV } from './TileV'
+export { default as TileView } from './TileView'
+export { default as TileDView } from './TileDView'
+export { default as TileVView } from './TileVView'

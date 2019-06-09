@@ -1,9 +1,9 @@
-import { Color3, MeshBuilder, StandardMaterial, Vector3, Scene } from 'babylonjs'
+import { Color3, MeshBuilder, StandardMaterial, Vector3 } from 'babylonjs'
 import * as castle from 'castle-game'
 import * as immutable from 'immutable'
-import { Tile } from '.'
+import { TileView } from '../tiles'
 
-export default class TileD extends Tile {
+export default class TileDView extends TileView {
 
   protected renderTile () {
     if (this.mesh) {
@@ -34,11 +34,15 @@ export default class TileD extends Tile {
     city.material = cityMaterial
   }
 
-  protected renderFigures (figures: immutable.Map<string, castle.Figure>) {
+  protected renderFigures (
+    figures: immutable.Map<string, castle.Figure>
+  ) {
     // TODO
   }
 
-  protected renderFigurePlaceholders (figurePlaceholders: immutable.Map<string, immutable.List<castle.Figure>>) {
+  protected renderFigurePlaceholders (
+    figurePlaceholders: immutable.Map<string, immutable.List<castle.Figure>>
+  ) {
     // TODO
   }
 

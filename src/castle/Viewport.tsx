@@ -2,7 +2,7 @@ import { Camera, Color4, DirectionalLight, Engine, Observable, Scene, UniversalC
 import * as castle from 'castle-game'
 import React, { useEffect, useRef } from 'react'
 import styles from './Viewport.module.css'
-import { World } from './world'
+import { WorldView } from './world'
 
 interface Props {
   readonly game: castle.Game
@@ -25,9 +25,7 @@ const Viewport = ({ game, onGameChange }: Props) => {
     const size = 10
     const camera = new UniversalCamera('UniversalCamera', new Vector3(size, size * 1.5, -size), scene)
     camera.mode = Camera.ORTHOGRAPHIC_CAMERA
-
     camera.setTarget(Vector3.Zero())
-    // camera.attachControl(canvas!, true)
 
     const light1 = new DirectionalLight('light', new Vector3(0, -1, 0), scene)
     light1.intensity = 1.00
@@ -36,7 +34,7 @@ const Viewport = ({ game, onGameChange }: Props) => {
     const light3 = new DirectionalLight('light', new Vector3(-1, 0, 0), scene)
     light3.intensity = 0.80
 
-    const world = new World(scene, observableGame)
+    const world = new WorldView(scene, observableGame)
 
     observableGame.add(game => {
       onGameChange(game)
@@ -46,8 +44,8 @@ const Viewport = ({ game, onGameChange }: Props) => {
 
     const resize = () => {
       engine.resize()
-      let aspectRatio = engine.getAspectRatio(camera)
-      let orthoSize = size
+      const aspectRatio = engine.getAspectRatio(camera)
+      const orthoSize = size
       camera.orthoTop = orthoSize
       camera.orthoBottom = -orthoSize
       camera.orthoLeft = -orthoSize * aspectRatio
@@ -65,7 +63,6 @@ const Viewport = ({ game, onGameChange }: Props) => {
   }, [])
 
   useEffect(() => {
-    // scene.render()
     observableGame.notifyObservers(game)
   }, [game])
 

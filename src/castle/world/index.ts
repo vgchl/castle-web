@@ -1,3 +1,3 @@
-export { default as PlaceTileIndicator } from './PlaceTileIndicator'
+export { default as PlaceTileIndicatorView } from './PlaceTileIndicatorView'
 export * from './tiles'
-export { default as World } from './World'
+export { default as WorldView } from './WorldView'
