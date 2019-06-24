@@ -20,7 +20,8 @@
   text-align: center;
   padding: 30px 0 0;
   color: #777;
-  border-top: 3px solid  #3498db;
+  border-top-width: 3px;
+  border-top-style: solid;
   /* color: #fff; */
   /* border-radius: 5px 5px 0 0; */
   font-size: 18pt;

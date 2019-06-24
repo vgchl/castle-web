@@ -60,7 +60,6 @@ export default class WorldView {
     })
   }
 
-
   /**
    * Renders tile placement indicators for the positions in which tiles can be placed, if the tile
    * placement action is available.

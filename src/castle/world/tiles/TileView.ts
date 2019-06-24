@@ -63,7 +63,7 @@ export default abstract class TileView {
     figures.forEach(placedFigure => {
       const segmentId = placedFigure!.placedSegment!.segment.id
       if (!this.figureViews.has(segmentId)) {
-        const figureView = FigureView.create(placedFigure!.figure, this.scene)
+        const figureView = FigureView.create(placedFigure!.figure, placedFigure!.player.color, this.scene)
         figureView.render()
         figureView.mesh!.position = this.figurePositionsBySegmentId.get(segmentId)!
         figureView.mesh!.parent = this.mesh!

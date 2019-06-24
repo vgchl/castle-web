@@ -6,8 +6,8 @@ import Viewport from './Viewport'
 import { reducer } from './ui/reducer'
 
 const initializeState = () => {
-  const playerAlice: castle.Player = new castle.Player('Alice', 'red')
-  const playerBob: castle.Player = new castle.Player('Bob', 'blue')
+  const playerAlice: castle.Player = new castle.Player('Alice', castle.Color.Red)
+  const playerBob: castle.Player = new castle.Player('Bob', castle.Color.Blue)
   const game = new castle.Game({
     world: new castle.World({
       tiles: immutable.Map<castle.Position, castle.PlacedTile>([[

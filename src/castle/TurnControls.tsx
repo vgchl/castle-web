@@ -3,6 +3,7 @@ import React, { Fragment } from 'react'
 import styles from './TurnControls.module.css'
 import TurnTile from './TurnTile'
 import * as ui from './ui'
+import { mapPlayerColor } from './world/mapPlayerColor'
 
 interface Props {
   readonly game: castle.Game
@@ -22,9 +23,12 @@ const TurnControls = ({ game, dispatch }: Props) => {
     <div className={styles.TurnControls}>
       <div className={styles.TurnControl}>
         <div className={styles.TilesRemaining}>
-        <div className={styles.TurnPlayer}>
-          {game.currentTurn.player.name}
-        </div>
+          <div
+            className={styles.TurnPlayer}
+            style={{ borderTopColor: mapPlayerColor(game.currentTurn.player.color).toHexString() }}
+          >
+            {game.currentTurn.player.name}
+          </div>
           <Fragment>
             <div>
               <TurnTile tile={game.currentTurn.currentTurnPart.tile} />
