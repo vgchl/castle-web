@@ -1,9 +1,14 @@
 import { Color3, MeshBuilder, StandardMaterial, Vector3 } from 'babylonjs'
-import * as castle from 'castle-game'
-import * as immutable from 'immutable'
 import { TileView } from '../tiles'
 
 export default class TileDView extends TileView {
+
+  protected figurePositionsBySegmentId: Map<string, Vector3> = new Map([
+    ['roadA', new Vector3(0, 0.75, 0)],
+    ['cityA', new Vector3(1.125, 0.75, 0)],
+    ['farmB', new Vector3(-0.865, 0.75, 1)],
+    ['farmA', new Vector3(0.5, 0.75, -1)]
+  ])
 
   protected renderTile () {
     if (this.mesh) {
@@ -32,18 +37,6 @@ export default class TileDView extends TileView {
     cityMaterial.diffuseColor = Color3.FromInts(180, 139, 94)
     cityMaterial.specularColor = new Color3(0.1, 0.1, 0.1)
     city.material = cityMaterial
-  }
-
-  protected renderFigures (
-    figures: immutable.Map<string, castle.Figure>
-  ) {
-    // TODO
-  }
-
-  protected renderFigurePlaceholders (
-    figurePlaceholders: immutable.Map<string, immutable.List<castle.Figure>>
-  ) {
-    // TODO
   }
 
 }

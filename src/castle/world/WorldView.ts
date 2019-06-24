@@ -1,7 +1,8 @@
-import { Observable, Scene } from 'babylonjs'
+import { Scene } from 'babylonjs'
 import * as castle from 'castle-game'
 import * as immutable from 'immutable'
 import { PlaceTileIndicatorView, TileView } from '.'
+import * as ui from '../ui'
 
 /**
  * Renders the game world, existing of the placed tiles, and -if applicable- tile placement indicators.
@@ -13,7 +14,7 @@ export default class WorldView {
 
   constructor (
     private readonly scene: Scene,
-    private readonly observableGame: Observable<castle.Game>
+    private readonly dispatch: ui.Dispatch
   ) {}
 
   /**
@@ -36,8 +37,19 @@ export default class WorldView {
   private renderTiles (
     game: castle.Game
   ) {
+    const figuresByPosition = game.world.figures.toList()
+      .groupBy(placedFigure => placedFigure!.placedSegment!.placedTile.position)
+
+    const figurePlaceholdersByPosition = game.actions
+      .filter(action => action instanceof castle.PlaceFigureAction)
+      .map(action => action as castle.PlaceFigureAction)
+      .flatMap(action => action!.possiblePlacements)
+      .groupBy(possiblePlacement => possiblePlacement!.placedSegment!.placedTile.position)
+
     game.world.tiles.forEach(placedTile => {
-      this.getTileView(placedTile!).render()
+      const figures = figuresByPosition.get(placedTile!.position, immutable.List()).toList()
+      const figurePlaceholders = figurePlaceholdersByPosition.get(placedTile!.position, immutable.List()).toList()
+      this.getTileView(placedTile!).render(figures, figurePlaceholders)
     })
 
     this.tileViews.forEach((tileView, key) => {
@@ -47,6 +59,7 @@ export default class WorldView {
       }
     })
   }
+
 
   /**
    * Renders tile placement indicators for the positions in which tiles can be placed, if the tile
@@ -63,7 +76,7 @@ export default class WorldView {
       .map(action => action!.possibleTilePlacements)
       .first() || immutable.Map()
 
-    possibleTilePlacements.forEach((orientations, position) => {
+    possibleTilePlacements.forEach((_, position) => {
       this.getPlaceTileIndicatorView(position!).render(game)
     })
 
@@ -88,7 +101,7 @@ export default class WorldView {
     if (this.tileViews.has(position.toString())) {
       return this.tileViews.get(position.toString())!
     }
-    const tileView = TileView.create(placedTile.tile, this.scene, placedTile.position, placedTile.orientation)
+    const tileView = TileView.create(this.scene, this.dispatch, placedTile.tile, placedTile.position, placedTile.orientation)
     this.tileViews.set(position.toString(), tileView)
     return tileView
   }
@@ -105,7 +118,7 @@ export default class WorldView {
     if (this.placeTileIndicatorViews.has(position.toString())) {
       return this.placeTileIndicatorViews.get(position.toString())!
     }
-    const placeTileIndicator = new PlaceTileIndicatorView(position, this.observableGame, this.scene)
+    const placeTileIndicator = new PlaceTileIndicatorView(this.scene, this.dispatch, position)
     this.placeTileIndicatorViews.set(position.toString(), placeTileIndicator)
     return placeTileIndicator
   }

@@ -1,13 +1,14 @@
 import * as castle from 'castle-game'
 import * as immutable from 'immutable'
-import React, { Fragment, useState } from 'react'
+import React, { Fragment, useReducer } from 'react'
 import TurnControls from './TurnControls'
 import Viewport from './Viewport'
+import { reducer } from './ui/reducer'
 
-const createGame = () => {
+const initializeState = () => {
   const playerAlice: castle.Player = new castle.Player('Alice', 'red')
   const playerBob: castle.Player = new castle.Player('Bob', 'blue')
-  return new castle.Game({
+  const game = new castle.Game({
     world: new castle.World({
       tiles: immutable.Map<castle.Position, castle.PlacedTile>([[
         castle.Position.origin,
@@ -16,15 +17,16 @@ const createGame = () => {
     }),
     players: immutable.List([playerAlice, playerBob])
   })
+  return { game }
 }
 
 const Castle = () => {
-  const [game, setGame] = useState(createGame())
+  const [state, dispatch] = useReducer(reducer, null, initializeState)
 
   return (
     <Fragment>
-      <TurnControls game={game} onGameChange={setGame}/>
-      <Viewport game={game} onGameChange={setGame} />
+      <TurnControls game={state.game} dispatch={dispatch} />
+      <Viewport game={state.game} dispatch={dispatch} />
     </Fragment>
   )
 }

@@ -1,9 +1,13 @@
 import { Color3, MeshBuilder, StandardMaterial, Vector3 } from 'babylonjs'
-import * as castle from 'castle-game'
 import { TileView } from '../tiles'
-import * as immutable from 'immutable'
 
 export default class TileVView extends TileView {
+
+  protected figurePositionsBySegmentId: Map<string, Vector3> = new Map([
+    ['farmA', new Vector3(2, 0, 1)],
+    ['farmB', new Vector3(3, 0, 1)],
+    ['roadA', new Vector3(4, 0, 1)]
+  ])
 
   protected renderTile () {
     if (this.mesh) {
@@ -29,18 +33,6 @@ export default class TileVView extends TileView {
     roadB.parent = this.mesh
     roadB.position = new Vector3(-0.625, 0.251, -0)
     roadB.material = roadMaterial
-  }
-
-  protected renderFigures (
-    figures: immutable.Map<string, castle.Figure>
-  ) {
-    // TODO
-  }
-
-  protected renderFigurePlaceholders (
-    figurePlaceholders: immutable.Map<string, immutable.List<castle.Figure>>
-  ) {
-    // TODO
   }
 
 }

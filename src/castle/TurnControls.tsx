@@ -2,25 +2,20 @@ import * as castle from 'castle-game'
 import React, { Fragment } from 'react'
 import styles from './TurnControls.module.css'
 import TurnTile from './TurnTile'
+import * as ui from './ui'
 
 interface Props {
   readonly game: castle.Game
-  readonly onGameChange: (game: castle.Game) => void
+  readonly dispatch: ui.Dispatch
 }
 
-const TurnControls = ({ game, onGameChange }: Props) => {
+const TurnControls = ({ game, dispatch }: Props) => {
   const hasConfirmAction = game.actions.some(action => action instanceof castle.ConfirmAction)
   const hasUndoAction = hasConfirmAction
   const hasActions = hasConfirmAction || hasUndoAction
 
   const confirm = () => {
-    onGameChange(
-      game.actions
-        .filter(action => action instanceof castle.ConfirmAction)
-        .map(action => action as castle.ConfirmAction)
-        .map(action => action!.confirm())
-        .first()
-    )
+    dispatch(new ui.actions.ConfirmUIAction())
   }
 
   return (
