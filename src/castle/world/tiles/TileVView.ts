@@ -4,9 +4,9 @@ import { TileView } from '../tiles'
 export default class TileVView extends TileView {
 
   protected figurePositionsBySegmentId: Map<string, Vector3> = new Map([
-    ['farmA', new Vector3(2, 0, 1)],
-    ['farmB', new Vector3(3, 0, 1)],
-    ['roadA', new Vector3(4, 0, 1)]
+    ['farmA', new Vector3(0.75, 0.75, 0.75)],
+    ['farmB', new Vector3(-0.75, 0.75, -0.75)],
+    ['roadA', new Vector3(0, 0.75, 0)]
   ])
 
   protected renderTile () {

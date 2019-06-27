@@ -83,17 +83,19 @@ export default abstract class TileView {
   protected renderFigurePlaceholders (
     figurePlaceholders: immutable.List<castle.PlacedFigure>
   ) {
-    figurePlaceholders.forEach(placedFigure => {
-      const segmentId = placedFigure!.placedSegment!.segment.id
-      if (!this.figurePlaceholderViews.has(segmentId)) {
-        const figurePlaceholderView = new FigurePlaceholderView(this.scene, this.dispatch, placedFigure!)
-        figurePlaceholderView.render()
-        figurePlaceholderView.mesh!.position = this.figurePositionsBySegmentId.get(segmentId)!
-        figurePlaceholderView.mesh!.parent = this.mesh!
+    figurePlaceholders
+      .filter(figurePlaceholder => figurePlaceholder!.figure === castle.Figure.follower) // TODO Add support for other followers
+      .forEach(placedFigure => {
+        const segmentId = placedFigure!.placedSegment!.segment.id
+        if (!this.figurePlaceholderViews.has(segmentId)) {
+          const figurePlaceholderView = new FigurePlaceholderView(this.scene, this.dispatch, placedFigure!)
+          figurePlaceholderView.render()
+          figurePlaceholderView.mesh!.position = this.figurePositionsBySegmentId.get(segmentId)!
+          figurePlaceholderView.mesh!.parent = this.mesh!
 
-        this.figurePlaceholderViews.set(segmentId, figurePlaceholderView)
-      }
-    })
+          this.figurePlaceholderViews.set(segmentId, figurePlaceholderView)
+        }
+      })
 
     this.figurePlaceholderViews.forEach((figurePlaceholderView, segmentId) => {
       if (!figurePlaceholders.find(figurePlaceholder => figurePlaceholder!.placedSegment!.segment.id === segmentId)) {

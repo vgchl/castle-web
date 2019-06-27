@@ -6,8 +6,8 @@ export default class TileDView extends TileView {
   protected figurePositionsBySegmentId: Map<string, Vector3> = new Map([
     ['roadA', new Vector3(0, 0.75, 0)],
     ['cityA', new Vector3(1.125, 0.75, 0)],
-    ['farmB', new Vector3(-0.865, 0.75, 1)],
-    ['farmA', new Vector3(0.5, 0.75, -1)]
+    ['farmA', new Vector3(-0.865, 0.75, 1)],
+    ['farmB', new Vector3(0.5, 0.75, -1)]
   ])
 
   protected renderTile () {
