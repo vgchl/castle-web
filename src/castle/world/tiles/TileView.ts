@@ -2,6 +2,9 @@ import { Mesh, Scene, Vector3 } from 'babylonjs'
 import * as castle from 'castle-game'
 import * as immutable from 'immutable'
 import { TileDView, TileVView } from '../tiles'
+import { FigurePlaceholderView } from '../figures'
+import FigureView from '../figures/FigureView'
+import * as ui from '../../ui'
 
 export default abstract class TileView {
 
@@ -9,30 +12,38 @@ export default abstract class TileView {
 
   public mesh?: Mesh
 
+  private figureViews: Map<string, FigureView> = new Map()
+  private figurePlaceholderViews: Map<string, FigurePlaceholderView> = new Map()
+
+  protected abstract figurePositionsBySegmentId: Map<string, Vector3>
+
   protected constructor (
     protected readonly scene: Scene,
+    protected readonly dispatch: ui.Dispatch,
+    public readonly tile: castle.Tile,
     public readonly position: castle.Position = castle.Position.origin,
     public readonly orientation: castle.Direction = castle.Direction.north
   ) {}
 
   public static create (
-    tile: castle.Tile,
     scene: Scene,
+    dispatch: ui.Dispatch,
+    tile: castle.Tile,
     position: castle.Position = castle.Position.origin,
     orientation: castle.Direction = castle.Direction.north
   ): TileView {
     if (tile instanceof castle.TileD) {
-      return new TileDView(scene, position, orientation)
+      return new TileDView(scene, dispatch, tile, position, orientation)
     }
     if (tile instanceof castle.TileV) {
-      return new TileVView(scene, position, orientation)
+      return new TileVView(scene, dispatch, tile, position, orientation)
     }
     throw new Error('Unsupported tile type.')
   }
 
   public render (
-    figures: immutable.Map<string, castle.Figure> = immutable.Map(),
-    figurePlaceholders: immutable.Map<string, immutable.List<castle.Figure>> = immutable.Map()
+    figures: immutable.List<castle.PlacedFigure> = immutable.List(),
+    figurePlaceholders: immutable.List<castle.PlacedFigure> = immutable.List()
   ) {
     this.renderTile()
     this.renderFigures(figures)
@@ -46,13 +57,47 @@ export default abstract class TileView {
 
   protected abstract renderTile (): void
 
-  protected abstract renderFigures (
-    figures: immutable.Map<string, castle.Figure>
-  ): void
+  protected renderFigures (
+    figures: immutable.List<castle.PlacedFigure>
+  ): void {
+    figures.forEach(placedFigure => {
+      const segmentId = placedFigure!.placedSegment!.segment.id
+      if (!this.figureViews.has(segmentId)) {
+        const figureView = FigureView.create(placedFigure!.figure, placedFigure!.player.color, this.scene)
+        figureView.render(this.mesh!, this.figurePositionsBySegmentId.get(segmentId)!)
+        this.figureViews.set(segmentId, figureView)
+      }
+    })
 
-  protected abstract renderFigurePlaceholders (
-    figurePlaceholders: immutable.Map<string, immutable.List<castle.Figure>>
-  ): void
+    this.figureViews.forEach((figureView, segmentId) => {
+      if (!figures.find(figure => figure!.placedSegment!.segment.id === segmentId)) {
+        figureView.delete()
+        this.figureViews.delete(segmentId)
+      }
+    })
+  }
+
+  protected renderFigurePlaceholders (
+    figurePlaceholders: immutable.List<castle.PlacedFigure>
+  ) {
+    figurePlaceholders
+      .filter(figurePlaceholder => figurePlaceholder!.figure === castle.Figure.follower) // TODO Add support for other followers
+      .forEach(placedFigure => {
+        const segmentId = placedFigure!.placedSegment!.segment.id
+        if (!this.figurePlaceholderViews.has(segmentId)) {
+          const figurePlaceholderView = new FigurePlaceholderView(this.scene, this.dispatch, placedFigure!)
+          figurePlaceholderView.render(this.mesh!, this.figurePositionsBySegmentId.get(segmentId)!)
+          this.figurePlaceholderViews.set(segmentId, figurePlaceholderView)
+        }
+      })
+
+    this.figurePlaceholderViews.forEach((figurePlaceholderView, segmentId) => {
+      if (!figurePlaceholders.find(figurePlaceholder => figurePlaceholder!.placedSegment!.segment.id === segmentId)) {
+        figurePlaceholderView.delete()
+        this.figurePlaceholderViews.delete(segmentId)
+      }
+    })
+  }
 
   public dispose () {
     if (!this.mesh) {

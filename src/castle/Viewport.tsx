@@ -1,25 +1,25 @@
-import { Camera, Color4, DirectionalLight, Engine, Observable, Scene, UniversalCamera, Vector3 } from 'babylonjs'
+import { Camera, Color4, DirectionalLight, Engine, Scene, UniversalCamera, Vector3 } from 'babylonjs'
 import * as castle from 'castle-game'
 import React, { useEffect, useRef } from 'react'
 import styles from './Viewport.module.css'
 import { WorldView } from './world'
+import * as ui from './ui'
 
 interface Props {
   readonly game: castle.Game
-  readonly onGameChange: (game: castle.Game) => void
+  readonly dispatch: ui.Dispatch
 }
 
-const observableGame = new Observable<castle.Game>()
-
-const Viewport = ({ game, onGameChange }: Props) => {
+const Viewport = ({ game, dispatch }: Props) => {
   const canvasRef = useRef<HTMLCanvasElement>(null)
-  let scene: Scene
+  const sceneRef = useRef<Scene>()
+  const worldViewRef = useRef<WorldView>()
 
   useEffect(() => {
     const canvas = canvasRef.current
 
     const engine = new Engine(canvas, true)
-    scene = new Scene(engine)
+    const scene = sceneRef.current = new Scene(engine)
     scene.clearColor = new Color4(0.95, 0.95, 0.95)
 
     const size = 10
@@ -34,13 +34,7 @@ const Viewport = ({ game, onGameChange }: Props) => {
     const light3 = new DirectionalLight('light', new Vector3(-1, 0, 0), scene)
     light3.intensity = 0.80
 
-    const world = new WorldView(scene, observableGame)
-
-    observableGame.add(game => {
-      onGameChange(game)
-      world.render(game)
-      scene.render()
-    })
+    const worldView = worldViewRef.current = new WorldView(scene, dispatch)
 
     const resize = () => {
       engine.resize()
@@ -56,6 +50,7 @@ const Viewport = ({ game, onGameChange }: Props) => {
     resize()
 
     // engine.runRenderLoop(() => {
+    worldView.render(game)
     scene.render()
     // })
 
@@ -63,7 +58,11 @@ const Viewport = ({ game, onGameChange }: Props) => {
   }, [])
 
   useEffect(() => {
-    observableGame.notifyObservers(game)
+    const scene = sceneRef.current!
+    const worldView = worldViewRef.current!
+
+    worldView.render(game)
+    scene.render()
   }, [game])
 
   return (

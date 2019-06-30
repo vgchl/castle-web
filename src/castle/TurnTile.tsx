@@ -1,14 +1,16 @@
 import { Camera, Color4, DirectionalLight, Engine, Scene, UniversalCamera, Vector3 } from 'babylonjs'
 import * as castle from 'castle-game'
-import React, { useEffect, useRef, useState, RefObject } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import styles from './TurnTile.module.css'
 import { TileView } from './world'
+import * as ui from './ui'
 
 interface Props {
   readonly tile: castle.Tile
+  readonly dispatch?: ui.Dispatch
 }
 
-const TurnTile = ({ tile }: Props) => {
+const TurnTile = ({ tile, dispatch = () => undefined }: Props) => {
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const sceneRef = useRef<Scene>()
 
@@ -53,7 +55,7 @@ const TurnTile = ({ tile }: Props) => {
       tileView.dispose()
     }
 
-    const newTileView = TileView.create(tile, scene)
+    const newTileView = TileView.create(scene, dispatch, tile)
     setTileView(newTileView)
 
     newTileView.render()
