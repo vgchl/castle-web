@@ -17,7 +17,7 @@ export default class TilePlaceholderView {
     material.diffuseColor = Color3.FromInts(255, 255, 255)
     material.specularColor = new Color3(0.1, 0.1, 0.1)
     this.mesh.material = material
-}
+  }
 
   public render (game: castle.Game): void {
     const orientation = game.actions
