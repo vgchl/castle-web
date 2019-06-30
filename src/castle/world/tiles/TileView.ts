@@ -64,10 +64,7 @@ export default abstract class TileView {
       const segmentId = placedFigure!.placedSegment!.segment.id
       if (!this.figureViews.has(segmentId)) {
         const figureView = FigureView.create(placedFigure!.figure, placedFigure!.player.color, this.scene)
-        figureView.render()
-        figureView.mesh!.position = this.figurePositionsBySegmentId.get(segmentId)!
-        figureView.mesh!.parent = this.mesh!
-
+        figureView.render(this.mesh!, this.figurePositionsBySegmentId.get(segmentId)!)
         this.figureViews.set(segmentId, figureView)
       }
     })
@@ -89,10 +86,7 @@ export default abstract class TileView {
         const segmentId = placedFigure!.placedSegment!.segment.id
         if (!this.figurePlaceholderViews.has(segmentId)) {
           const figurePlaceholderView = new FigurePlaceholderView(this.scene, this.dispatch, placedFigure!)
-          figurePlaceholderView.render()
-          figurePlaceholderView.mesh!.position = this.figurePositionsBySegmentId.get(segmentId)!
-          figurePlaceholderView.mesh!.parent = this.mesh!
-
+          figurePlaceholderView.render(this.mesh!, this.figurePositionsBySegmentId.get(segmentId)!)
           this.figurePlaceholderViews.set(segmentId, figurePlaceholderView)
         }
       })

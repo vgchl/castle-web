@@ -4,9 +4,9 @@ import { TileView } from '../tiles'
 export default class TileVView extends TileView {
 
   protected figurePositionsBySegmentId: Map<string, Vector3> = new Map([
-    ['farmA', new Vector3(0.75, 0.75, 0.75)],
-    ['farmB', new Vector3(-0.75, 0.75, -0.75)],
-    ['roadA', new Vector3(0, 0.75, 0)]
+    ['farmA', new Vector3(0.865, 0.25, 0.865)],
+    ['farmB', new Vector3(-0.865, 0.25, -0.865)],
+    ['roadA', new Vector3(0, 0.25, 0)]
   ])
 
   protected renderTile () {
@@ -16,7 +16,6 @@ export default class TileVView extends TileView {
 
     this.mesh = MeshBuilder.CreateBox('tile', { height: 0.5, width: 3, depth: 3 }, this.scene)
     const material = new StandardMaterial('mat', this.scene)
-    material.alpha = 1
     material.diffuseColor = Color3.FromInts(139, 180, 74)
     material.specularColor = new Color3(0.1, 0.1, 0.1)
     this.mesh.material = material

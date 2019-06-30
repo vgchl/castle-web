@@ -1,7 +1,7 @@
 import { Scene } from 'babylonjs'
 import * as castle from 'castle-game'
 import * as immutable from 'immutable'
-import { PlaceTileIndicatorView, TileView } from '.'
+import { TilePlaceholderView, TileView } from '.'
 import * as ui from '../ui'
 
 /**
@@ -10,7 +10,7 @@ import * as ui from '../ui'
 export default class WorldView {
 
   private readonly tileViews: Map<string, TileView> = new Map()
-  private readonly placeTileIndicatorViews: Map<string, PlaceTileIndicatorView> = new Map()
+  private readonly tilePlaceholderViews: Map<string, TilePlaceholderView> = new Map()
 
   constructor (
     private readonly scene: Scene,
@@ -44,6 +44,12 @@ export default class WorldView {
       .filter(action => action instanceof castle.PlaceFigureAction)
       .map(action => action as castle.PlaceFigureAction)
       .flatMap(action => action!.possiblePlacements)
+      .filter(possiblePlacement => possiblePlacement!.figure === castle.Figure.follower) // TODO Support other types of followers
+      .filter(possiblePlacement => {
+        return !game.world.figures.some(placedFigure => {
+          return placedFigure!.placedSegment!.segment === possiblePlacement!.placedSegment!.segment
+        })
+      })
       .groupBy(possiblePlacement => possiblePlacement!.placedSegment!.placedTile.position)
 
     game.world.tiles.forEach(placedTile => {
@@ -72,17 +78,17 @@ export default class WorldView {
     const possibleTilePlacements = game.actions
       .filter(action => action instanceof castle.PlaceTileAction)
       .map(action => action as castle.PlaceTileAction)
-      .map(action => action!.possibleTilePlacements)
+      .map(action => action!.possibleTilePlacements.filter((_, position) => !game.world.tiles.has(position!)))
       .first() || immutable.Map()
 
     possibleTilePlacements.forEach((_, position) => {
       this.getPlaceTileIndicatorView(position!).render(game)
     })
 
-    this.placeTileIndicatorViews.forEach(placeTileIndicator => {
+    this.tilePlaceholderViews.forEach(placeTileIndicator => {
       if (!possibleTilePlacements.has(placeTileIndicator.position)) {
         placeTileIndicator.remove()
-        this.placeTileIndicatorViews.delete(placeTileIndicator.position.toString())
+        this.tilePlaceholderViews.delete(placeTileIndicator.position.toString())
       }
     })
   }
@@ -113,12 +119,12 @@ export default class WorldView {
    */
   private getPlaceTileIndicatorView (
     position: castle.Position
-  ): PlaceTileIndicatorView {
-    if (this.placeTileIndicatorViews.has(position.toString())) {
-      return this.placeTileIndicatorViews.get(position.toString())!
+  ): TilePlaceholderView {
+    if (this.tilePlaceholderViews.has(position.toString())) {
+      return this.tilePlaceholderViews.get(position.toString())!
     }
-    const placeTileIndicator = new PlaceTileIndicatorView(this.scene, this.dispatch, position)
-    this.placeTileIndicatorViews.set(position.toString(), placeTileIndicator)
+    const placeTileIndicator = new TilePlaceholderView(this.scene, this.dispatch, position)
+    this.tilePlaceholderViews.set(position.toString(), placeTileIndicator)
     return placeTileIndicator
   }
 

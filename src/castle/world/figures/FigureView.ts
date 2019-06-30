@@ -1,4 +1,4 @@
-import { Mesh, MeshBuilder, StandardMaterial, Color3, Scene } from 'babylonjs'
+import { Mesh, MeshBuilder, StandardMaterial, Color3, Scene, Vector3 } from 'babylonjs'
 import * as castle from 'castle-game'
 import { mapPlayerColor } from '../mapPlayerColor'
 
@@ -18,14 +18,20 @@ export default class FigureView {
     private readonly color: castle.Color
   ) {}
 
-  public render () {
+  public render (parentMesh: Mesh, position: Vector3) {
     if (this.mesh) {
       return
     }
 
-    this.mesh = MeshBuilder.CreateBox('tile', { height: 1, width: 0.5, depth: 0.5 }, this.scene)
+    const offset = new Mesh('figure-offset', this.scene, parentMesh)
+    offset.isVisible = false
+    offset.position = position
+
+    this.mesh = MeshBuilder.CreateBox('figure', { height: 1, width: 0.4, depth: 0.4 }, this.scene)
+    this.mesh.parent = offset
+    this.mesh.position = new Vector3(0, 0.5, 0)
+
     const material = new StandardMaterial('mat', this.scene)
-    material.alpha = 1
     material.diffuseColor = mapPlayerColor(this.color)
     material.specularColor = new Color3(0.1, 0.1, 0.1)
     this.mesh.material = material
