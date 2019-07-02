@@ -1,0 +1,24 @@
+.sidebar {
+  padding: 25px;
+  height: 100%;
+  box-sizing: border-box;
+  width: 350px;
+  right: 0;
+  position: absolute;
+  pointer-events: none;
+  display: flex;
+  flex-direction: column;
+}
+.sidebar > * {
+  pointer-events: all;
+}
+.sidebar > .sidebarItem {
+  box-sizing: border-box;
+  width: 100%;
+  box-shadow: 0 0 3px rgba(0, 0, 0, 0.33);
+  background: #fff;
+}
+.sidebar > .sidebarItem.scoreboard {
+  align-self: flex-end;
+  margin-top: auto;
+}

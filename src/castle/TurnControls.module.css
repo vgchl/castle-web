@@ -1,41 +1,30 @@
-.TurnControls {
-  position: absolute;
-  right: 0;
-  padding: 25px;
-}
-
-.TurnControl {
-  /* border-radius: 5px 5px 0 0; */
-  width: 275px;
-  box-shadow: 0 0 3px rgba(0, 0, 0, 0.2);
-  background: #fff;
-  display: flex;
-}
-.TurnControl:last-child {
-  border-bottom: 3px solid #f0f0f0;
-}
-
-.TurnPlayer {
-  font-family: 'Gill Sans';
+.turnPlayer {
   text-align: center;
-  padding: 30px 0 0;
-  color: #777;
-  border-top-width: 3px;
-  border-top-style: solid;
-  /* color: #fff; */
-  /* border-radius: 5px 5px 0 0; */
-  font-size: 18pt;
+  padding: 35px 0 10px;
+  border-width: 0 0px;
+  border-style: solid;
+  font-size: 22pt;
+  font-weight: 600;
+  margin: 0;
 }
 
-.TilesRemaining {
+.turnTile {
+  text-align: center;
+}
+
+.tilesRemaining {
   font-family: 'Gill Sans';
   width: 100%;
   text-align: center;
-  padding: 0 0 20px;
+  padding: 0 0 45px;
   color: #777;
 }
 
-.TurnControl button {
+.actionBar {
+  display: flex;
+  border-top: 6px solid #eee;
+}
+.actionBar button {
   display: block;
   width: 100%;
   border: none;
@@ -44,15 +33,15 @@
   font-size: 20pt;
   font-weight: bold;
 }
-
-.TurnControl button.Confirm {
-  /* min-width: 70%; */
+.actionBar button:disabled {
+  color: #eee;
+}
+.actionBar .confirm {
   font-size: 28pt;
   padding: 12px 0 20px;
   color: #26a65b;
   border-right: 1px solid #eee;
 }
-
-.TurnControl button.Undo {
+.actionBar .undo {
   color: #aaa;
 }

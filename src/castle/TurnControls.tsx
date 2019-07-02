@@ -11,53 +11,38 @@ interface Props {
 }
 
 const TurnControls = ({ game, dispatch }: Props) => {
-  const hasConfirmAction = game.actions.some(action => action instanceof castle.ConfirmAction)
-  const hasUndoAction = hasConfirmAction
-  const hasActions = hasConfirmAction || hasUndoAction
+  const canConfirm = game.actions.some(action => action instanceof castle.ConfirmAction)
+  const canUndo = canConfirm
 
   const confirm = () => {
-    dispatch(new ui.actions.ConfirmUIAction())
+    if (canConfirm) {
+      dispatch(new ui.actions.ConfirmUIAction())
+    }
   }
 
-  return (
-    <div className={styles.TurnControls}>
-      <div className={styles.TurnControl}>
-        <div className={styles.TilesRemaining}>
-          <div
-            className={styles.TurnPlayer}
-            style={{ borderTopColor: mapPlayerColor(game.currentTurn.player.color).toHexString() }}
-          >
-            {game.currentTurn.player.name}
-          </div>
-          <Fragment>
-            <div>
-              <TurnTile tile={game.currentTurn.currentTurnPart.tile} />
-            </div>
-            {game.tileSet.tilesRemaining} tiles remaining
-          </Fragment>
-        </div>
-      </div>
+  const playerColor = mapPlayerColor(game.currentTurn.player.color).toHexString()
 
-      {hasActions && (
-        <Fragment>
-          <div className={styles.TurnControl}>
-            <br/><br/><br/><br/>
-          </div>
-          <div className={styles.TurnControl}>
-            {hasConfirmAction && (
-              <button onClick={confirm} className={styles.Confirm}>
-                ✔
-              </button>
-            )}
-            {hasUndoAction && (
-              <button className={styles.Undo}>
-                ✕
-              </button>
-            )}
-          </div>
-        </Fragment>
-      )}
-    </div>
+  return (
+    <Fragment>
+        <h1 className={styles.turnPlayer} style={{ color: playerColor }}>
+          {game.currentTurn.player.name}
+        </h1>
+        <div className={styles.turnTile}>
+          <TurnTile tile={game.currentTurn.currentTurnPart.tile} />
+        </div>
+        <div className={styles.tilesRemaining}>
+          {game.tileSet.tilesRemaining} tiles remaining
+        </div>
+        <div className={styles.actionBar} style={{ borderColor: playerColor }}>
+            <button disabled={!canConfirm} onClick={confirm} className={styles.confirm}>
+              ✔
+            </button>
+            <button disabled={!canUndo} className={styles.undo}>
+              ✕
+            </button>
+        </div>
+
+    </Fragment>
   )
 }
 

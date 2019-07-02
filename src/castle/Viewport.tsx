@@ -16,8 +16,7 @@ const Viewport = ({ game, dispatch }: Props) => {
   const worldViewRef = useRef<WorldView>()
 
   useEffect(() => {
-    const canvas = canvasRef.current
-
+    const canvas = canvasRef.current!
     const engine = new Engine(canvas, true)
     const scene = sceneRef.current = new Scene(engine)
     scene.clearColor = new Color4(0.95, 0.95, 0.95)

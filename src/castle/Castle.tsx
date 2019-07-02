@@ -1,9 +1,11 @@
 import * as castle from 'castle-game'
 import * as immutable from 'immutable'
-import React, { Fragment, useReducer } from 'react'
+import React, { useReducer, Fragment } from 'react'
 import TurnControls from './TurnControls'
 import Viewport from './Viewport'
 import { reducer } from './ui/reducer'
+import styles from './Castle.module.css'
+import { Scoreboard } from './Scoreboard'
 
 const initializeState = () => {
   const playerAlice: castle.Player = new castle.Player('Alice', castle.Color.Red)
@@ -25,7 +27,14 @@ const Castle = () => {
 
   return (
     <Fragment>
-      <TurnControls game={state.game} dispatch={dispatch} />
+      <div className={styles.sidebar}>
+        <div className={styles.sidebarItem}>
+          <TurnControls game={state.game} dispatch={dispatch} />
+        </div>
+        <div className={[styles.sidebarItem, styles.scoreboard].join(' ')}>
+          <Scoreboard game={state.game} />
+        </div>
+      </div>
       <Viewport game={state.game} dispatch={dispatch} />
     </Fragment>
   )

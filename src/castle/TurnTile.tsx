@@ -35,6 +35,7 @@ const TurnTile = ({ tile, dispatch = () => undefined }: Props) => {
     light3.intensity = 0.80
 
     const resize = () => {
+      engine.setHardwareScalingLevel(1 / window.devicePixelRatio)
       engine.resize()
       let aspectRatio = engine.getAspectRatio(camera)
       let orthoSize = size
