@@ -6,6 +6,8 @@ image:https://img.shields.io/badge/code_style-standard-brightgreen.svg[JavaScrip
 
 Web client for Castle, using React and BabylonJS.
 
+image::screenshot.png
+
 This project was bootstrapped with https://github.com/facebook/create-react-app[Create React App].
 
 == Development
